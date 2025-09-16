@@ -83,7 +83,8 @@ def main():
         show_dynamic_maps()
 
 def show_data_description(hospitales):
-    """Tab 1: Data Description"""
+    """Tab 1: Data Description con gráficos estadísticos expandidos"""
+
     st.header("📋 Data Description")
 
     col1, col2 = st.columns([2, 1])
@@ -91,15 +92,16 @@ def show_data_description(hospitales):
     with col1:
         st.subheader("🎯 Unit of Analysis")
         st.markdown("""
-**Operational public hospitals in Peru**
+        **Operational public hospitals in Peru**
 
-This analysis focuses exclusively on:
-- Public hospitals that are currently operational
-- Hospitals with valid geographical coordinates (lat/long)
-- Establishments classified as hospitals (not health centers)
-""")
+        This analysis focuses exclusively on:
+        - Public hospitals that are currently operational
+        - Hospitals with valid geographical coordinates (lat/long)
+        - Establishments classified as hospitals (not health centers)
+        """)
 
         st.subheader("📊 Data Sources")
+
         sources_data = {
             "Dataset": ["MINSA - IPRESS", "Population Centers", "Districts Shapefile"],
             "Source": ["Ministry of Health", "INEI", "Course Repository"],
@@ -108,39 +110,173 @@ This analysis focuses exclusively on:
                 "Population centers for proximity analysis", 
                 "District boundaries for spatial analysis"
             ],
-            "Records": [f"{len(hospitales)} hospitals", "—", "1,873 districts"]
+            "Records": [f"{len(hospitales)} hospitals", "33 centers", "1,873 districts"]
         }
+
         st.dataframe(pd.DataFrame(sources_data), use_container_width=True, hide_index=True)
 
         st.subheader("🔧 Filtering Rules")
         st.markdown("""
-**Only operational hospitals with valid lat/long:**
-1. **Institution filter**: Only public institutions (GOBIERNO REGIONAL, MINSA, ESSALUD)
-2. **Status filter**: Only establishments with "EN FUNCIONAMIENTO" condition
-3. **Type filter**: Only "HOSPITALES O CLINICAS" classification
-4. **Geographic filter**: Valid coordinates within Peru boundaries
-5. **Data quality**: Remove records with missing or invalid coordinates
-""")
+        **Only operational hospitals with valid lat/long:**
+
+        1. **Institution filter**: Only public institutions (GOBIERNO REGIONAL, MINSA, ESSALUD)
+        2. **Status filter**: Only establishments with "EN FUNCIONAMIENTO" condition
+        3. **Type filter**: Only "HOSPITALES O CLINICAS" classification
+        4. **Geographic filter**: Valid coordinates within Peru boundaries
+        5. **Data quality**: Remove records with missing or invalid coordinates
+        """)
 
     with col2:
         st.subheader("📈 Key Statistics")
+
+        # Métricas principales
         st.metric("Total Hospitals Analyzed", f"{len(hospitales)}")
         st.metric("Departments Covered", f"{hospitales['Departamento'].nunique()}")
         st.metric("Geographic Coverage", "National")
 
+        # Distribución por institución
         st.subheader("🏛️ By Institution")
         inst_counts = hospitales['Institución'].value_counts()
         for inst, count in inst_counts.items():
             percentage = (count / len(hospitales)) * 100
             st.write(f"• {inst}: {count} ({percentage:.1f}%)")
 
+        # Gráfico de distribución por institución
         fig_pie = px.pie(
             values=inst_counts.values,
             names=inst_counts.index,
-            title="Institution Distribution"
+            title="Institution Distribution",
+            color_discrete_sequence=px.colors.qualitative.Set3
         )
         fig_pie.update_traces(textposition='inside', textinfo='percent+label')
         st.plotly_chart(fig_pie, use_container_width=True)
+
+    # SECCIÓN DE GRÁFICOS ESTADÍSTICOS EXPANDIDA
+    st.subheader("📊 Statistical Analysis of Hospital Distribution")
+
+    # Crear columnas para gráficos
+    col1, col2 = st.columns(2)
+
+    with col1:
+        # Gráfico de barras - Top 10 departamentos
+        st.write("**Top 10 Departments by Hospital Count**")
+        dept_counts = hospitales['Departamento'].value_counts().head(10)
+
+        fig_bar = px.bar(
+            x=dept_counts.values,
+            y=dept_counts.index,
+            orientation='h',
+            title="Hospitals per Department",
+            labels={'x': 'Number of Hospitals', 'y': 'Department'},
+            color=dept_counts.values,
+            color_continuous_scale='Blues'
+        )
+        fig_bar.update_layout(height=400, yaxis={'categoryorder':'total ascending'})
+        st.plotly_chart(fig_bar, use_container_width=True)
+
+        # Gráfico de clasificación de hospitales
+        st.write("**Hospital Classification Distribution**")
+        clasif_counts = hospitales['Clasificación'].value_counts()
+
+        fig_clasif = px.bar(
+            x=clasif_counts.values,
+            y=['General' if 'GENERAL' in name else 'Specialized' for name in clasif_counts.index],
+            title="Hospital Types",
+            labels={'x': 'Count', 'y': 'Type'},
+            color=['General', 'Specialized'],
+            color_discrete_map={'General': '#1f77b4', 'Specialized': '#ff7f0e'}
+        )
+        fig_clasif.update_layout(height=300)
+        st.plotly_chart(fig_clasif, use_container_width=True)
+
+    with col2:
+        # Histograma de distribución geográfica
+        st.write("**Geographic Distribution - Latitude**")
+        fig_hist_lat = px.histogram(
+            hospitales, 
+            x='latitud' if 'latitud' in hospitales.columns else hospitales.geometry.y,
+            nbins=20,
+            title="Latitude Distribution",
+            labels={'x': 'Latitude', 'y': 'Count'},
+            color_discrete_sequence=['#2ca02c']
+        )
+        fig_hist_lat.update_layout(height=300)
+        st.plotly_chart(fig_hist_lat, use_container_width=True)
+
+        # Histograma de distribución geográfica - Longitud
+        st.write("**Geographic Distribution - Longitude**")
+        fig_hist_lon = px.histogram(
+            hospitales, 
+            x='longitud' if 'longitud' in hospitales.columns else hospitales.geometry.x,
+            nbins=20,
+            title="Longitude Distribution",
+            labels={'x': 'Longitude', 'y': 'Count'},
+            color_discrete_sequence=['#d62728']
+        )
+        fig_hist_lon.update_layout(height=300)
+        st.plotly_chart(fig_hist_lon, use_container_width=True)
+
+    # Gráfico de dispersión geográfica
+    st.write("**Geographic Scatter Plot**")
+
+    # Extraer coordenadas según el formato disponible
+    if 'latitud' in hospitales.columns and 'longitud' in hospitales.columns:
+        lat_col, lon_col = 'latitud', 'longitud'
+    else:
+        # Si son geometrías de GeoPandas
+        hospitales_coords = hospitales.copy()
+        hospitales_coords['lat_temp'] = hospitales_coords.geometry.y
+        hospitales_coords['lon_temp'] = hospitales_coords.geometry.x
+        lat_col, lon_col = 'lat_temp', 'lon_temp'
+
+    fig_scatter = px.scatter(
+        hospitales,
+        x=lon_col,
+        y=lat_col,
+        color='Departamento',
+        title="Hospital Locations Across Peru",
+        labels={'x': 'Longitude', 'y': 'Latitude'},
+        hover_data=['Nombre del establecimiento', 'Institución'] if 'Nombre del establecimiento' in hospitales.columns else None
+    )
+    fig_scatter.update_layout(height=500, showlegend=False)  # Hide legend due to many departments
+    st.plotly_chart(fig_scatter, use_container_width=True)
+
+    # Tabla estadística resumen
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.write("**Department Statistics Summary**")
+        dept_stats = hospitales['Departamento'].value_counts().describe()
+        stats_df = pd.DataFrame({
+            'Statistic': ['Mean', 'Std Dev', 'Min', '25%', '50%', '75%', 'Max'],
+            'Value': [f"{dept_stats['mean']:.1f}", f"{dept_stats['std']:.1f}", 
+                     f"{dept_stats['min']:.0f}", f"{dept_stats['25%']:.1f}",
+                     f"{dept_stats['50%']:.1f}", f"{dept_stats['75%']:.1f}", 
+                     f"{dept_stats['max']:.0f}"]
+        })
+        st.dataframe(stats_df, use_container_width=True, hide_index=True)
+
+    with col2:
+        st.write("**Coverage Metrics**")
+        coverage_data = {
+            'Metric': [
+                'Total Departments', 
+                'Avg Hospitals/Dept', 
+                'Departments with 1-5 hospitals',
+                'Departments with 6+ hospitals',
+                'Geographic Span (Lat)',
+                'Geographic Span (Lon)'
+            ],
+            'Value': [
+                hospitales['Departamento'].nunique(),
+                f"{len(hospitales) / hospitales['Departamento'].nunique():.1f}",
+                (hospitales['Departamento'].value_counts() <= 5).sum(),
+                (hospitales['Departamento'].value_counts() > 5).sum(),
+                f"{hospitales[lat_col].max() - hospitales[lat_col].min():.1f}°",
+                f"{hospitales[lon_col].max() - hospitales[lon_col].min():.1f}°"
+            ]
+        }
+        st.dataframe(pd.DataFrame(coverage_data), use_container_width=True, hide_index=True)
 
 def show_static_maps_department_analysis(hospitales, stats_dept):
     """Tab 2: Static Maps & Department Analysis"""
