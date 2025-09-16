@@ -1,0 +1,2185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_7fc46e7bee5cb289d4c21cfac5c638f2 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+    <h2 align="center"><b>Comparación de Acceso Hospitalario: Lima vs Loreto</b></h2>
+    <p align="center">Análisis de proximidad - Buffers de 10 km</p>
+    
+    
+    <div style="position: fixed; 
+                top: 100px; right: 50px; width: 300px; height: 200px; 
+                background-color: white; border:2px solid grey; z-index:9999; 
+                font-size:12px; padding: 15px">
+    <h4>📊 Estadísticas de Acceso</h4>
+    <table style="width:100%">
+        <tr><th>Región</th><th>Hospitales</th><th>Acceso</th></tr>
+        <tr><td>Lima</td><td>37</td><td>100%</td></tr>
+        <tr><td>Loreto</td><td>6</td><td>33.3%</td></tr>
+    </table>
+    <br>
+    <p><b>Brecha:</b> 66.7 puntos porcentuales</p>
+    <p style="font-size:10px; color:blue;">🔵 Lima | 🟢 Loreto</p>
+    </div>
+    
+    
+            <div class="folium-map" id="map_7fc46e7bee5cb289d4c21cfac5c638f2" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_7fc46e7bee5cb289d4c21cfac5c638f2 = L.map(
+                "map_7fc46e7bee5cb289d4c21cfac5c638f2",
+                {
+                    center: [-8.0, -76.0],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 6,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_3892a75388500d469e189a52b1c84e2e = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_3892a75388500d469e189a52b1c84e2e.addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var marker_581e7eabedadf789e83c9c631c40329d = L.marker(
+                [-12.1605768, -76.9591024],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_8ca61ef012e74f02bfe0a5c2438570b5 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_9fa0ee212b36e162eacddf62f8abe662 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_3285c27be606d63c766bf42adf8a8ae1 = $(`<div id="html_3285c27be606d63c766bf42adf8a8ae1" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL MARIA AUXILIADORA</b><br>                 📍 LIMA<br>                 🏛️ MINSA                 </div>`)[0];
+                popup_9fa0ee212b36e162eacddf62f8abe662.setContent(html_3285c27be606d63c766bf42adf8a8ae1);
+            
+        
+
+        marker_581e7eabedadf789e83c9c631c40329d.bindPopup(popup_9fa0ee212b36e162eacddf62f8abe662)
+        ;
+
+        
+    
+    
+            marker_581e7eabedadf789e83c9c631c40329d.bindTooltip(
+                `<div>
+                     LIMA: HOSPITAL MARIA AUXILIADORA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_581e7eabedadf789e83c9c631c40329d.setIcon(icon_8ca61ef012e74f02bfe0a5c2438570b5);
+            
+    
+            var marker_da263b8011687221a1b739cde9b10071 = L.marker(
+                [-11.9138337, -77.0395181],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_79a7713e416395002c6d393dad6df171 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_20895e680ace017540ead0f8bbc5fdd7 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_e7128e612a4624eb0ecc03ec70dc2713 = $(`<div id="html_e7128e612a4624eb0ecc03ec70dc2713" style="width: 100.0%; height: 100.0%;">                 <b>NACIONAL SERGIO E. BERNALES</b><br>                 📍 LIMA<br>                 🏛️ MINSA                 </div>`)[0];
+                popup_20895e680ace017540ead0f8bbc5fdd7.setContent(html_e7128e612a4624eb0ecc03ec70dc2713);
+            
+        
+
+        marker_da263b8011687221a1b739cde9b10071.bindPopup(popup_20895e680ace017540ead0f8bbc5fdd7)
+        ;
+
+        
+    
+    
+            marker_da263b8011687221a1b739cde9b10071.bindTooltip(
+                `<div>
+                     LIMA: NACIONAL SERGIO E. BERNALES
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_da263b8011687221a1b739cde9b10071.setIcon(icon_79a7713e416395002c6d393dad6df171);
+            
+    
+            var marker_a09b224dcf7f71a6226a22d4b0e0d7f3 = L.marker(
+                [-11.9684779, -76.9955667],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_06dde0afd015a5cc6c61178abd5c846c = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_c9249f068f9fda6fc9dae02760869ec7 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_914ebcde585af0ae5c79999b7059e348 = $(`<div id="html_914ebcde585af0ae5c79999b7059e348" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL AURELIO DIAZ UFANO Y PERAL</b><br>                 📍 LIMA<br>                 🏛️ ESSALUD                 </div>`)[0];
+                popup_c9249f068f9fda6fc9dae02760869ec7.setContent(html_914ebcde585af0ae5c79999b7059e348);
+            
+        
+
+        marker_a09b224dcf7f71a6226a22d4b0e0d7f3.bindPopup(popup_c9249f068f9fda6fc9dae02760869ec7)
+        ;
+
+        
+    
+    
+            marker_a09b224dcf7f71a6226a22d4b0e0d7f3.bindTooltip(
+                `<div>
+                     LIMA: HOSPITAL AURELIO DIAZ UFANO Y PERAL
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_a09b224dcf7f71a6226a22d4b0e0d7f3.setIcon(icon_06dde0afd015a5cc6c61178abd5c846c);
+            
+    
+            var marker_f3aa58e261a74b96b3abd8d685fe0823 = L.marker(
+                [-11.9438086, -77.058242],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_49bc21deacccff502d7b0ce972d99050 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_1f4a336fffd9148fcceda19f455e0964 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_41d1cf19cc8ab7287e6939dd2bbddc23 = $(`<div id="html_41d1cf19cc8ab7287e6939dd2bbddc23" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL I MARINO MOLINA SCIPPA</b><br>                 📍 LIMA<br>                 🏛️ ESSALUD                 </div>`)[0];
+                popup_1f4a336fffd9148fcceda19f455e0964.setContent(html_41d1cf19cc8ab7287e6939dd2bbddc23);
+            
+        
+
+        marker_f3aa58e261a74b96b3abd8d685fe0823.bindPopup(popup_1f4a336fffd9148fcceda19f455e0964)
+        ;
+
+        
+    
+    
+            marker_f3aa58e261a74b96b3abd8d685fe0823.bindTooltip(
+                `<div>
+                     LIMA: HOSPITAL I MARINO MOLINA SCIPPA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_f3aa58e261a74b96b3abd8d685fe0823.setIcon(icon_49bc21deacccff502d7b0ce972d99050);
+            
+    
+            var marker_90bb66a6d8b50e237037c84ec0758714 = L.marker(
+                [-12.04757833, -76.947995],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_7625a593f0c37b0bbf658bfc0f7d4d05 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_f0f8e41960379033e0c1cf0664b72413 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_27352733de75498a0e7c5a4146367e02 = $(`<div id="html_27352733de75498a0e7c5a4146367e02" style="width: 100.0%; height: 100.0%;">                 <b>SEGURO SOCIAL DE SALUD - ESSALUD</b><br>                 📍 LIMA<br>                 🏛️ ESSALUD                 </div>`)[0];
+                popup_f0f8e41960379033e0c1cf0664b72413.setContent(html_27352733de75498a0e7c5a4146367e02);
+            
+        
+
+        marker_90bb66a6d8b50e237037c84ec0758714.bindPopup(popup_f0f8e41960379033e0c1cf0664b72413)
+        ;
+
+        
+    
+    
+            marker_90bb66a6d8b50e237037c84ec0758714.bindTooltip(
+                `<div>
+                     LIMA: SEGURO SOCIAL DE SALUD - ESSALUD
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_90bb66a6d8b50e237037c84ec0758714.setIcon(icon_7625a593f0c37b0bbf658bfc0f7d4d05);
+            
+    
+            var marker_1303495f29760aedc2def0881f761fea = L.marker(
+                [-12.1782885, -76.9405994],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_9abda674efd9069e18ae3c3779384a50 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_782a4e0fc89321c967f94826ba9205d2 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_812d064a842d141c105bc8370a2c0fcc = $(`<div id="html_812d064a842d141c105bc8370a2c0fcc" style="width: 100.0%; height: 100.0%;">                 <b>GUILLERMO KAELIN  DE LA FUENTE</b><br>                 📍 LIMA<br>                 🏛️ ESSALUD                 </div>`)[0];
+                popup_782a4e0fc89321c967f94826ba9205d2.setContent(html_812d064a842d141c105bc8370a2c0fcc);
+            
+        
+
+        marker_1303495f29760aedc2def0881f761fea.bindPopup(popup_782a4e0fc89321c967f94826ba9205d2)
+        ;
+
+        
+    
+    
+            marker_1303495f29760aedc2def0881f761fea.bindTooltip(
+                `<div>
+                     LIMA: GUILLERMO KAELIN  DE LA FUENTE
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_1303495f29760aedc2def0881f761fea.setIcon(icon_9abda674efd9069e18ae3c3779384a50);
+            
+    
+            var marker_d7705913ea269406c48ff2aff84d2387 = L.marker(
+                [-10.75433068, -77.76436841],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_89c1ba6b500414b4dfad8234f25ce074 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_d457cc80f63a3d275c89f9ca69044572 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c7821e7d6a93cf211824e7f963f91ee4 = $(`<div id="html_c7821e7d6a93cf211824e7f963f91ee4" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL DE BARRANCA</b><br>                 📍 LIMA<br>                 🏛️ GOBIERNO REGIONAL                 </div>`)[0];
+                popup_d457cc80f63a3d275c89f9ca69044572.setContent(html_c7821e7d6a93cf211824e7f963f91ee4);
+            
+        
+
+        marker_d7705913ea269406c48ff2aff84d2387.bindPopup(popup_d457cc80f63a3d275c89f9ca69044572)
+        ;
+
+        
+    
+    
+            marker_d7705913ea269406c48ff2aff84d2387.bindTooltip(
+                `<div>
+                     LIMA: HOSPITAL DE BARRANCA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_d7705913ea269406c48ff2aff84d2387.setIcon(icon_89c1ba6b500414b4dfad8234f25ce074);
+            
+    
+            var marker_dd136b4e9bc757bf500ec43c6a44fe46 = L.marker(
+                [-12.0443408, -77.0440331],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_e8b7d0093f2450d6724275e4d8172994 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_380b0f52e403826f7166a3cc57251f45 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_e9de40fe5a763bd0767aea119d7bf002 = $(`<div id="html_e9de40fe5a763bd0767aea119d7bf002" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL II RAMÓN CASTILLA</b><br>                 📍 LIMA<br>                 🏛️ ESSALUD                 </div>`)[0];
+                popup_380b0f52e403826f7166a3cc57251f45.setContent(html_e9de40fe5a763bd0767aea119d7bf002);
+            
+        
+
+        marker_dd136b4e9bc757bf500ec43c6a44fe46.bindPopup(popup_380b0f52e403826f7166a3cc57251f45)
+        ;
+
+        
+    
+    
+            marker_dd136b4e9bc757bf500ec43c6a44fe46.bindTooltip(
+                `<div>
+                     LIMA: HOSPITAL II RAMÓN CASTILLA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_dd136b4e9bc757bf500ec43c6a44fe46.setIcon(icon_e8b7d0093f2450d6724275e4d8172994);
+            
+    
+            var marker_853f8a715313eb4d7488c813fdaf8082 = L.marker(
+                [-12.0589571, -77.0312779],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_4dce2fb6613153f4f6b56f8c5fb879eb = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_4b3776afe75cb4df5f001714bdb490f9 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_ee008401398bc3848f32ddf5721fad95 = $(`<div id="html_ee008401398bc3848f32ddf5721fad95" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL III EMERGENCIAS GRAU</b><br>                 📍 LIMA<br>                 🏛️ ESSALUD                 </div>`)[0];
+                popup_4b3776afe75cb4df5f001714bdb490f9.setContent(html_ee008401398bc3848f32ddf5721fad95);
+            
+        
+
+        marker_853f8a715313eb4d7488c813fdaf8082.bindPopup(popup_4b3776afe75cb4df5f001714bdb490f9)
+        ;
+
+        
+    
+    
+            marker_853f8a715313eb4d7488c813fdaf8082.bindTooltip(
+                `<div>
+                     LIMA: HOSPITAL III EMERGENCIAS GRAU
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_853f8a715313eb4d7488c813fdaf8082.setIcon(icon_4dce2fb6613153f4f6b56f8c5fb879eb);
+            
+    
+            var marker_dc50fd4b0cb4a4692ddcf760fbe8d16e = L.marker(
+                [-12.0571705, -77.0162686],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_52598499252a22e2ece43503c5277976 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_ca25c1593a746c09c4e29dffbce728ce = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_23600f3355095ec04ea703544dd81ff8 = $(`<div id="html_23600f3355095ec04ea703544dd81ff8" style="width: 100.0%; height: 100.0%;">                 <b>NACIONAL  DOS DE MAYO</b><br>                 📍 LIMA<br>                 🏛️ MINSA                 </div>`)[0];
+                popup_ca25c1593a746c09c4e29dffbce728ce.setContent(html_23600f3355095ec04ea703544dd81ff8);
+            
+        
+
+        marker_dc50fd4b0cb4a4692ddcf760fbe8d16e.bindPopup(popup_ca25c1593a746c09c4e29dffbce728ce)
+        ;
+
+        
+    
+    
+            marker_dc50fd4b0cb4a4692ddcf760fbe8d16e.bindTooltip(
+                `<div>
+                     LIMA: NACIONAL  DOS DE MAYO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_dc50fd4b0cb4a4692ddcf760fbe8d16e.setIcon(icon_52598499252a22e2ece43503c5277976);
+            
+    
+            var marker_0853b9f8caaafc658f9fe255c2e59ca6 = L.marker(
+                [-12.0158889, -76.8201183],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_9531fc5bc05a400c2f4f45946c71ab85 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_5843e9417c0f2f22760c95a0c82d08e0 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_ed1d09d5ab70d033c7490a5ea52ad48e = $(`<div id="html_ed1d09d5ab70d033c7490a5ea52ad48e" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL DE BAJA COMPLEJIDAD HUAYCAN</b><br>                 📍 LIMA<br>                 🏛️ MINSA                 </div>`)[0];
+                popup_5843e9417c0f2f22760c95a0c82d08e0.setContent(html_ed1d09d5ab70d033c7490a5ea52ad48e);
+            
+        
+
+        marker_0853b9f8caaafc658f9fe255c2e59ca6.bindPopup(popup_5843e9417c0f2f22760c95a0c82d08e0)
+        ;
+
+        
+    
+    
+            marker_0853b9f8caaafc658f9fe255c2e59ca6.bindTooltip(
+                `<div>
+                     LIMA: HOSPITAL DE BAJA COMPLEJIDAD HUAYCAN
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_0853b9f8caaafc658f9fe255c2e59ca6.setIcon(icon_9531fc5bc05a400c2f4f45946c71ab85);
+            
+    
+            var marker_8884dca7a1df935e136c6e271359f5de = L.marker(
+                [-12.062131, -76.9455439],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_74e7ae9b419f40857485e63b2e38ec14 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_79823579a9bb065f2f25f3af2f394ad8 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_ecaad5a9dcb826bb8056c28d856c9a3f = $(`<div id="html_ecaad5a9dcb826bb8056c28d856c9a3f" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL I CARLOS ALCANTARA BUTTERFIELD</b><br>                 📍 LIMA<br>                 🏛️ ESSALUD                 </div>`)[0];
+                popup_79823579a9bb065f2f25f3af2f394ad8.setContent(html_ecaad5a9dcb826bb8056c28d856c9a3f);
+            
+        
+
+        marker_8884dca7a1df935e136c6e271359f5de.bindPopup(popup_79823579a9bb065f2f25f3af2f394ad8)
+        ;
+
+        
+    
+    
+            marker_8884dca7a1df935e136c6e271359f5de.bindTooltip(
+                `<div>
+                     LIMA: HOSPITAL I CARLOS ALCANTARA BUTTERFIELD
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_8884dca7a1df935e136c6e271359f5de.setIcon(icon_74e7ae9b419f40857485e63b2e38ec14);
+            
+    
+            var marker_30a0b56cf1f3349e3df04e12075cc898 = L.marker(
+                [-12.2107672, -76.9319845],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_7734991e76c38651dbcb23ece631f422 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_2f033e267d6bf1835b3d60f082fbb012 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_18d361177b1c8482f74f0515d358747e = $(`<div id="html_18d361177b1c8482f74f0515d358747e" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL I ULDARICO ROCCA FERNANDEZ</b><br>                 📍 LIMA<br>                 🏛️ ESSALUD                 </div>`)[0];
+                popup_2f033e267d6bf1835b3d60f082fbb012.setContent(html_18d361177b1c8482f74f0515d358747e);
+            
+        
+
+        marker_30a0b56cf1f3349e3df04e12075cc898.bindPopup(popup_2f033e267d6bf1835b3d60f082fbb012)
+        ;
+
+        
+    
+    
+            marker_30a0b56cf1f3349e3df04e12075cc898.bindTooltip(
+                `<div>
+                     LIMA: HOSPITAL I ULDARICO ROCCA FERNANDEZ
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_30a0b56cf1f3349e3df04e12075cc898.setIcon(icon_7734991e76c38651dbcb23ece631f422);
+            
+    
+            var marker_62dfb8998b283fde45641ac234c53e81 = L.marker(
+                [-12.098705, -77.065756],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_b0c92057cdd32066d05367a563f44f37 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_cdc941ce0a42cc1db41522fc291059ee = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_7a150e2f3b506ca6fc6eb171d962dc18 = $(`<div id="html_7a150e2f3b506ca6fc6eb171d962dc18" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL VICTOR LARCO HERRERA</b><br>                 📍 LIMA<br>                 🏛️ MINSA                 </div>`)[0];
+                popup_cdc941ce0a42cc1db41522fc291059ee.setContent(html_7a150e2f3b506ca6fc6eb171d962dc18);
+            
+        
+
+        marker_62dfb8998b283fde45641ac234c53e81.bindPopup(popup_cdc941ce0a42cc1db41522fc291059ee)
+        ;
+
+        
+    
+    
+            marker_62dfb8998b283fde45641ac234c53e81.bindTooltip(
+                `<div>
+                     LIMA: HOSPITAL VICTOR LARCO HERRERA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_62dfb8998b283fde45641ac234c53e81.setIcon(icon_b0c92057cdd32066d05367a563f44f37);
+            
+    
+            var marker_cd09e9b0d56e2d60321c175ad41730be = L.marker(
+                [-12.0498454, -77.0425597],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_d9a238ddb6c4ff8460ed26b279e7f14b = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_ef5b6f5b975d7f819523383ec99b4a46 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_ffbccc03cc0b3e39ee43deba573cab7f = $(`<div id="html_ffbccc03cc0b3e39ee43deba573cab7f" style="width: 100.0%; height: 100.0%;">                 <b>NACIONAL ARZOBISPO LOAYZA</b><br>                 📍 LIMA<br>                 🏛️ MINSA                 </div>`)[0];
+                popup_ef5b6f5b975d7f819523383ec99b4a46.setContent(html_ffbccc03cc0b3e39ee43deba573cab7f);
+            
+        
+
+        marker_cd09e9b0d56e2d60321c175ad41730be.bindPopup(popup_ef5b6f5b975d7f819523383ec99b4a46)
+        ;
+
+        
+    
+    
+            marker_cd09e9b0d56e2d60321c175ad41730be.bindTooltip(
+                `<div>
+                     LIMA: NACIONAL ARZOBISPO LOAYZA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_cd09e9b0d56e2d60321c175ad41730be.setIcon(icon_d9a238ddb6c4ff8460ed26b279e7f14b);
+            
+    
+            var marker_9888db1a777b57c75b1e9da709fc8719 = L.marker(
+                [-12.1136234, -77.0279933],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_e2ea9493a8165b1536434b33844530f5 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_83aab0a757ecb4aab41a32073fb8b509 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_96e028619c8d3b756b1749af1dcc07fe = $(`<div id="html_96e028619c8d3b756b1749af1dcc07fe" style="width: 100.0%; height: 100.0%;">                 <b>ESSALUD - HOSPITAL II SUÁREZ ANGAMOS</b><br>                 📍 LIMA<br>                 🏛️ ESSALUD                 </div>`)[0];
+                popup_83aab0a757ecb4aab41a32073fb8b509.setContent(html_96e028619c8d3b756b1749af1dcc07fe);
+            
+        
+
+        marker_9888db1a777b57c75b1e9da709fc8719.bindPopup(popup_83aab0a757ecb4aab41a32073fb8b509)
+        ;
+
+        
+    
+    
+            marker_9888db1a777b57c75b1e9da709fc8719.bindTooltip(
+                `<div>
+                     LIMA: ESSALUD - HOSPITAL II SUÁREZ ANGAMOS
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_9888db1a777b57c75b1e9da709fc8719.setIcon(icon_e2ea9493a8165b1536434b33844530f5);
+            
+    
+            var marker_25e37284f4876b705bf16959a2ceadbe = L.marker(
+                [-11.50329771, -77.21380309],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_9e9f4da7c337ee275f0c88ac0780a05f = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_444af23f4097044ccbb6b74915425056 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_fbb475f2b85a19f76895a3d32203bd86 = $(`<div id="html_fbb475f2b85a19f76895a3d32203bd86" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL SAN JUAN BAUTISTA HUARAL</b><br>                 📍 LIMA<br>                 🏛️ GOBIERNO REGIONAL                 </div>`)[0];
+                popup_444af23f4097044ccbb6b74915425056.setContent(html_fbb475f2b85a19f76895a3d32203bd86);
+            
+        
+
+        marker_25e37284f4876b705bf16959a2ceadbe.bindPopup(popup_444af23f4097044ccbb6b74915425056)
+        ;
+
+        
+    
+    
+            marker_25e37284f4876b705bf16959a2ceadbe.bindTooltip(
+                `<div>
+                     LIMA: HOSPITAL SAN JUAN BAUTISTA HUARAL
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_25e37284f4876b705bf16959a2ceadbe.setIcon(icon_9e9f4da7c337ee275f0c88ac0780a05f);
+            
+    
+            var marker_0aa7fcefff1622d4e524616c3c2ffd44 = L.marker(
+                [-11.1133442, -77.6091848],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_6433aee595063e5fd5b358b4caef75e7 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_fdd0b0c1f1e9758258d7b878fc122806 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_d5e9e05f8683b16a9f2dd8a2e75a76e6 = $(`<div id="html_d5e9e05f8683b16a9f2dd8a2e75a76e6" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL II GUSTAVO LANATTA LUJAN - ESSALUD</b><br>                 📍 LIMA<br>                 🏛️ ESSALUD                 </div>`)[0];
+                popup_fdd0b0c1f1e9758258d7b878fc122806.setContent(html_d5e9e05f8683b16a9f2dd8a2e75a76e6);
+            
+        
+
+        marker_0aa7fcefff1622d4e524616c3c2ffd44.bindPopup(popup_fdd0b0c1f1e9758258d7b878fc122806)
+        ;
+
+        
+    
+    
+            marker_0aa7fcefff1622d4e524616c3c2ffd44.bindTooltip(
+                `<div>
+                     LIMA: HOSPITAL II GUSTAVO LANATTA LUJAN - ESSALUD
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_0aa7fcefff1622d4e524616c3c2ffd44.setIcon(icon_6433aee595063e5fd5b358b4caef75e7);
+            
+    
+            var marker_3d991296915a51b7452b2833415148d7 = L.marker(
+                [-11.8631805, -77.079335],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_07940e5adfaffd3dec222c9096dd7557 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_7bd49794432b5dd5a933e08a762382a3 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_207a84986c949fdb6a9face8722168f5 = $(`<div id="html_207a84986c949fdb6a9face8722168f5" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL CARLOS LANFRANCO LA HOZ</b><br>                 📍 LIMA<br>                 🏛️ MINSA                 </div>`)[0];
+                popup_7bd49794432b5dd5a933e08a762382a3.setContent(html_207a84986c949fdb6a9face8722168f5);
+            
+        
+
+        marker_3d991296915a51b7452b2833415148d7.bindPopup(popup_7bd49794432b5dd5a933e08a762382a3)
+        ;
+
+        
+    
+    
+            marker_3d991296915a51b7452b2833415148d7.bindTooltip(
+                `<div>
+                     LIMA: HOSPITAL CARLOS LANFRANCO LA HOZ
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_3d991296915a51b7452b2833415148d7.setIcon(icon_07940e5adfaffd3dec222c9096dd7557);
+            
+    
+            var marker_f374746e68857938cb4345946dfc7580 = L.marker(
+                [-12.192758, -77.0037655],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_4bdfef91593e092076fcb561aaa05103 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_0355463fb04f1ee601652e1bdd99795a = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_3db84db8797962dd2613455455ee8673 = $(`<div id="html_3db84db8797962dd2613455455ee8673" style="width: 100.0%; height: 100.0%;">                 <b>INSTITUTO NACIONAL DE REHABILITACION "DRA. ADRIANA REBAZA FLORES" AMISTAD PERU - JAPON</b><br>                 📍 LIMA<br>                 🏛️ MINSA                 </div>`)[0];
+                popup_0355463fb04f1ee601652e1bdd99795a.setContent(html_3db84db8797962dd2613455455ee8673);
+            
+        
+
+        marker_f374746e68857938cb4345946dfc7580.bindPopup(popup_0355463fb04f1ee601652e1bdd99795a)
+        ;
+
+        
+    
+    
+            marker_f374746e68857938cb4345946dfc7580.bindTooltip(
+                `<div>
+                     LIMA: INSTITUTO NACIONAL DE REHABILITACION "DRA. ADRIANA REBAZA FLORES" AMISTAD PERU - JAPON
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_f374746e68857938cb4345946dfc7580.setIcon(icon_4bdfef91593e092076fcb561aaa05103);
+            
+    
+            var marker_4a9b86b932b41d47193e6c0e9724a8b9 = L.marker(
+                [-12.0399743, -76.9935755],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_8de6f4dcd740f23ec7b2180ea745c373 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_821894a78eaa77aeaa263fe3e365833b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_aca962908d4ce5937d4c6f8d76597bc4 = $(`<div id="html_aca962908d4ce5937d4c6f8d76597bc4" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL NACIONAL HIPOLITO UNANUE</b><br>                 📍 LIMA<br>                 🏛️ MINSA                 </div>`)[0];
+                popup_821894a78eaa77aeaa263fe3e365833b.setContent(html_aca962908d4ce5937d4c6f8d76597bc4);
+            
+        
+
+        marker_4a9b86b932b41d47193e6c0e9724a8b9.bindPopup(popup_821894a78eaa77aeaa263fe3e365833b)
+        ;
+
+        
+    
+    
+            marker_4a9b86b932b41d47193e6c0e9724a8b9.bindTooltip(
+                `<div>
+                     LIMA: HOSPITAL NACIONAL HIPOLITO UNANUE
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_4a9b86b932b41d47193e6c0e9724a8b9.setIcon(icon_8de6f4dcd740f23ec7b2180ea745c373);
+            
+    
+            var marker_d8f7820dd1744444748ae84a7e450d0e = L.marker(
+                [-11.11552309, -77.60782172],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_692ca435e5ba35c44521c54c47bcb6c5 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_91da13aa020870e2df34c6ae880cde2b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_54b06837831dae506cd39ddde94f6e9c = $(`<div id="html_54b06837831dae506cd39ddde94f6e9c" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL GENERAL DE HUACHO</b><br>                 📍 LIMA<br>                 🏛️ GOBIERNO REGIONAL                 </div>`)[0];
+                popup_91da13aa020870e2df34c6ae880cde2b.setContent(html_54b06837831dae506cd39ddde94f6e9c);
+            
+        
+
+        marker_d8f7820dd1744444748ae84a7e450d0e.bindPopup(popup_91da13aa020870e2df34c6ae880cde2b)
+        ;
+
+        
+    
+    
+            marker_d8f7820dd1744444748ae84a7e450d0e.bindTooltip(
+                `<div>
+                     LIMA: HOSPITAL GENERAL DE HUACHO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_d8f7820dd1744444748ae84a7e450d0e.setIcon(icon_692ca435e5ba35c44521c54c47bcb6c5);
+            
+    
+            var marker_522f85a6eb41d774e1784b7e76f40656 = L.marker(
+                [-13.076235, -76.385432],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_cb622fff7b336b999970536772cc0710 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_086fc91ccb3dd9437f395443db9cb78e = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_cc727fd27fba98ea5b9ca82825fb533e = $(`<div id="html_cc727fd27fba98ea5b9ca82825fb533e" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL REZOLA</b><br>                 📍 LIMA<br>                 🏛️ GOBIERNO REGIONAL                 </div>`)[0];
+                popup_086fc91ccb3dd9437f395443db9cb78e.setContent(html_cc727fd27fba98ea5b9ca82825fb533e);
+            
+        
+
+        marker_522f85a6eb41d774e1784b7e76f40656.bindPopup(popup_086fc91ccb3dd9437f395443db9cb78e)
+        ;
+
+        
+    
+    
+            marker_522f85a6eb41d774e1784b7e76f40656.bindTooltip(
+                `<div>
+                     LIMA: HOSPITAL REZOLA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_522f85a6eb41d774e1784b7e76f40656.setIcon(icon_cb622fff7b336b999970536772cc0710);
+            
+    
+            var marker_547041e7cf7b44710ccb8f515d350019 = L.marker(
+                [-12.0468271, -76.9454975],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_ff06424a6c8bb41da4d4db34d56ebaa3 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_09775ce642d62865186bf0c26e6345de = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_f837f2e6f05fa0298d892ffd6eee931f = $(`<div id="html_f837f2e6f05fa0298d892ffd6eee931f" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL HERMILIO VALDIZAN</b><br>                 📍 LIMA<br>                 🏛️ MINSA                 </div>`)[0];
+                popup_09775ce642d62865186bf0c26e6345de.setContent(html_f837f2e6f05fa0298d892ffd6eee931f);
+            
+        
+
+        marker_547041e7cf7b44710ccb8f515d350019.bindPopup(popup_09775ce642d62865186bf0c26e6345de)
+        ;
+
+        
+    
+    
+            marker_547041e7cf7b44710ccb8f515d350019.bindTooltip(
+                `<div>
+                     LIMA: HOSPITAL HERMILIO VALDIZAN
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_547041e7cf7b44710ccb8f515d350019.setIcon(icon_ff06424a6c8bb41da4d4db34d56ebaa3);
+            
+    
+            var marker_ab9ce3c3e0aa96d7e5f58880f6e1d28f = L.marker(
+                [-12.0659612, -77.0945832],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_ca9c969974e6fca4b585d1cff5c28e23 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_201a9155bbf222cde7b2a6b9e2e74cce = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_a481caeb091003db50cc19b2528a35d9 = $(`<div id="html_a481caeb091003db50cc19b2528a35d9" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL I OCTAVIO MONGRUT MUÑOZ</b><br>                 📍 LIMA<br>                 🏛️ ESSALUD                 </div>`)[0];
+                popup_201a9155bbf222cde7b2a6b9e2e74cce.setContent(html_a481caeb091003db50cc19b2528a35d9);
+            
+        
+
+        marker_ab9ce3c3e0aa96d7e5f58880f6e1d28f.bindPopup(popup_201a9155bbf222cde7b2a6b9e2e74cce)
+        ;
+
+        
+    
+    
+            marker_ab9ce3c3e0aa96d7e5f58880f6e1d28f.bindTooltip(
+                `<div>
+                     LIMA: HOSPITAL I OCTAVIO MONGRUT MUÑOZ
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_ab9ce3c3e0aa96d7e5f58880f6e1d28f.setIcon(icon_ca9c969974e6fca4b585d1cff5c28e23);
+            
+    
+            var marker_a138fa89fd4e403db5bd7176d6f57d71 = L.marker(
+                [-11.9344473, -76.693699],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_d325048c2699e8e11783e06a81b49b10 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_0cc227501db56d0aaee9ffd9a4a3fd12 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_a7b7b95661fae761700fb84a4df64558 = $(`<div id="html_a7b7b95661fae761700fb84a4df64558" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL DE MEDIANA COMPLEJIDAD JOSE AGURTO TELLO</b><br>                 📍 LIMA<br>                 🏛️ MINSA                 </div>`)[0];
+                popup_0cc227501db56d0aaee9ffd9a4a3fd12.setContent(html_a7b7b95661fae761700fb84a4df64558);
+            
+        
+
+        marker_a138fa89fd4e403db5bd7176d6f57d71.bindPopup(popup_0cc227501db56d0aaee9ffd9a4a3fd12)
+        ;
+
+        
+    
+    
+            marker_a138fa89fd4e403db5bd7176d6f57d71.bindTooltip(
+                `<div>
+                     LIMA: HOSPITAL DE MEDIANA COMPLEJIDAD JOSE AGURTO TELLO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_a138fa89fd4e403db5bd7176d6f57d71.setIcon(icon_d325048c2699e8e11783e06a81b49b10);
+            
+    
+            var marker_1a2c00edf3e0535b56296273f9b939c6 = L.marker(
+                [-11.9665774, -77.0030573],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_102cc5685273773a80b41b41834cb1e8 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_ba00f304bc24f96b942a98ed19800d2c = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_76ecde023a8bd01104e1d6f7f025d9f0 = $(`<div id="html_76ecde023a8bd01104e1d6f7f025d9f0" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL SAN JUAN DE LURIGANCHO</b><br>                 📍 LIMA<br>                 🏛️ MINSA                 </div>`)[0];
+                popup_ba00f304bc24f96b942a98ed19800d2c.setContent(html_76ecde023a8bd01104e1d6f7f025d9f0);
+            
+        
+
+        marker_1a2c00edf3e0535b56296273f9b939c6.bindPopup(popup_ba00f304bc24f96b942a98ed19800d2c)
+        ;
+
+        
+    
+    
+            marker_1a2c00edf3e0535b56296273f9b939c6.bindTooltip(
+                `<div>
+                     LIMA: HOSPITAL SAN JUAN DE LURIGANCHO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_1a2c00edf3e0535b56296273f9b939c6.setIcon(icon_102cc5685273773a80b41b41834cb1e8);
+            
+    
+            var marker_74ffcd09d4a85ad476470201ba85620f = L.marker(
+                [-10.79690607, -77.7172015],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_e77a5804d7b299bbce8b366148fc40ad = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_3bbf760c9f301f4a1ed376eb71755439 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_9dad136a1ff1526d40d5b537a95ffebe = $(`<div id="html_9dad136a1ff1526d40d5b537a95ffebe" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL DE SUPE LAURA ESTHER RODRIGUEZ DULANTO</b><br>                 📍 LIMA<br>                 🏛️ GOBIERNO REGIONAL                 </div>`)[0];
+                popup_3bbf760c9f301f4a1ed376eb71755439.setContent(html_9dad136a1ff1526d40d5b537a95ffebe);
+            
+        
+
+        marker_74ffcd09d4a85ad476470201ba85620f.bindPopup(popup_3bbf760c9f301f4a1ed376eb71755439)
+        ;
+
+        
+    
+    
+            marker_74ffcd09d4a85ad476470201ba85620f.bindTooltip(
+                `<div>
+                     LIMA: HOSPITAL DE SUPE LAURA ESTHER RODRIGUEZ DULANTO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_74ffcd09d4a85ad476470201ba85620f.setIcon(icon_e77a5804d7b299bbce8b366148fc40ad);
+            
+    
+            var marker_9019103d6db2a60dcec2119b43b935b0 = L.marker(
+                [-12.0260421, -76.9199038],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_20daef1407dc089b8dca70c4a7678d4d = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_6f820c3026a04283965cceb06d7dfb96 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_98b5f1ea9288e36519a565a484277877 = $(`<div id="html_98b5f1ea9288e36519a565a484277877" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL VITARTE</b><br>                 📍 LIMA<br>                 🏛️ MINSA                 </div>`)[0];
+                popup_6f820c3026a04283965cceb06d7dfb96.setContent(html_98b5f1ea9288e36519a565a484277877);
+            
+        
+
+        marker_9019103d6db2a60dcec2119b43b935b0.bindPopup(popup_6f820c3026a04283965cceb06d7dfb96)
+        ;
+
+        
+    
+    
+            marker_9019103d6db2a60dcec2119b43b935b0.bindTooltip(
+                `<div>
+                     LIMA: HOSPITAL VITARTE
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_9019103d6db2a60dcec2119b43b935b0.setIcon(icon_20daef1407dc089b8dca70c4a7678d4d);
+            
+    
+            var marker_b05133a22fa0a9fdd11cb12778e1587e = L.marker(
+                [-12.0581708, -77.0217293],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_68ec7694e6741818c893a18d05054057 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_1f305e8869029f25276d37d75f77ce8c = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_901d1008929ec59d6e997bb943f2956f = $(`<div id="html_901d1008929ec59d6e997bb943f2956f" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL DE EMERGENCIAS PEDIATRICAS</b><br>                 📍 LIMA<br>                 🏛️ MINSA                 </div>`)[0];
+                popup_1f305e8869029f25276d37d75f77ce8c.setContent(html_901d1008929ec59d6e997bb943f2956f);
+            
+        
+
+        marker_b05133a22fa0a9fdd11cb12778e1587e.bindPopup(popup_1f305e8869029f25276d37d75f77ce8c)
+        ;
+
+        
+    
+    
+            marker_b05133a22fa0a9fdd11cb12778e1587e.bindTooltip(
+                `<div>
+                     LIMA: HOSPITAL DE EMERGENCIAS PEDIATRICAS
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_b05133a22fa0a9fdd11cb12778e1587e.setIcon(icon_68ec7694e6741818c893a18d05054057);
+            
+    
+            var marker_afa8fc897fc2600bb301dd1cc2650627 = L.marker(
+                [-11.56082038, -77.27058037],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_48162dfdc8cf499a50133c94eeab5aca = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_14386dad12d03719d9aa293a896065ab = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_5f21df14a0e280165bc5055d0d9ecbb9 = $(`<div id="html_5f21df14a0e280165bc5055d0d9ecbb9" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL CHANCAY Y SERVICIOS BASICOS DE SALUD</b><br>                 📍 LIMA<br>                 🏛️ GOBIERNO REGIONAL                 </div>`)[0];
+                popup_14386dad12d03719d9aa293a896065ab.setContent(html_5f21df14a0e280165bc5055d0d9ecbb9);
+            
+        
+
+        marker_afa8fc897fc2600bb301dd1cc2650627.bindPopup(popup_14386dad12d03719d9aa293a896065ab)
+        ;
+
+        
+    
+    
+            marker_afa8fc897fc2600bb301dd1cc2650627.bindTooltip(
+                `<div>
+                     LIMA: HOSPITAL CHANCAY Y SERVICIOS BASICOS DE SALUD
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_afa8fc897fc2600bb301dd1cc2650627.setIcon(icon_48162dfdc8cf499a50133c94eeab5aca);
+            
+    
+            var marker_b3299b580979141c0622866b2f981727 = L.marker(
+                [-12.0220216, -77.0544967],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_20b32aaeef53f392b3b2cd7423dc6a49 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_ea5fbc68e64ba837faae90f1082dc36f = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_0929a97579281766697a6d78571ac7de = $(`<div id="html_0929a97579281766697a6d78571ac7de" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL NACIONAL CAYETANO HEREDIA</b><br>                 📍 LIMA<br>                 🏛️ MINSA                 </div>`)[0];
+                popup_ea5fbc68e64ba837faae90f1082dc36f.setContent(html_0929a97579281766697a6d78571ac7de);
+            
+        
+
+        marker_b3299b580979141c0622866b2f981727.bindPopup(popup_ea5fbc68e64ba837faae90f1082dc36f)
+        ;
+
+        
+    
+    
+            marker_b3299b580979141c0622866b2f981727.bindTooltip(
+                `<div>
+                     LIMA: HOSPITAL NACIONAL CAYETANO HEREDIA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_b3299b580979141c0622866b2f981727.setIcon(icon_20b32aaeef53f392b3b2cd7423dc6a49);
+            
+    
+            var marker_b8c60eeedcc5bc308c870143ed88a7fa = L.marker(
+                [-11.842977, -76.381897],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_ff122b9789fb768216a418ad86c90cd9 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_fb142646f911f3fe9704d823ced4281b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_d0621282fb8be6a1bf4b755a6f1e31e3 = $(`<div id="html_d0621282fb8be6a1bf4b755a6f1e31e3" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL SAN JUAN DE MATUCANA</b><br>                 📍 LIMA<br>                 🏛️ GOBIERNO REGIONAL                 </div>`)[0];
+                popup_fb142646f911f3fe9704d823ced4281b.setContent(html_d0621282fb8be6a1bf4b755a6f1e31e3);
+            
+        
+
+        marker_b8c60eeedcc5bc308c870143ed88a7fa.bindPopup(popup_fb142646f911f3fe9704d823ced4281b)
+        ;
+
+        
+    
+    
+            marker_b8c60eeedcc5bc308c870143ed88a7fa.bindTooltip(
+                `<div>
+                     LIMA: HOSPITAL SAN JUAN DE MATUCANA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_b8c60eeedcc5bc308c870143ed88a7fa.setIcon(icon_ff122b9789fb768216a418ad86c90cd9);
+            
+    
+            var marker_7b965aca156cf135718cc0baa9b85aa6 = L.marker(
+                [-12.1282107, -77.0180619],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_2f1206d1f8694af46cfe7c6bbf6ef846 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_52fcbc3b5f80f9bcb95aee3ba20236dc = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_0c86259c0392b51f91cbf1cb9484642c = $(`<div id="html_0c86259c0392b51f91cbf1cb9484642c" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL DE EMERGENCIAS JOSE CASIMIRO ULLOA</b><br>                 📍 LIMA<br>                 🏛️ MINSA                 </div>`)[0];
+                popup_52fcbc3b5f80f9bcb95aee3ba20236dc.setContent(html_0c86259c0392b51f91cbf1cb9484642c);
+            
+        
+
+        marker_7b965aca156cf135718cc0baa9b85aa6.bindPopup(popup_52fcbc3b5f80f9bcb95aee3ba20236dc)
+        ;
+
+        
+    
+    
+            marker_7b965aca156cf135718cc0baa9b85aa6.bindTooltip(
+                `<div>
+                     LIMA: HOSPITAL DE EMERGENCIAS JOSE CASIMIRO ULLOA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_7b965aca156cf135718cc0baa9b85aa6.setIcon(icon_2f1206d1f8694af46cfe7c6bbf6ef846);
+            
+    
+            var marker_55cd7394fda6dea49021b6d91fc518e5 = L.marker(
+                [-12.0716016, -77.0610651],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_17181d13ec1bb70ad18db79854a434e9 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_d7c975e3afc4c7efd9b1e584ea791248 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_3dd5487c7a3b2195ce2ccf765a6fe413 = $(`<div id="html_3dd5487c7a3b2195ce2ccf765a6fe413" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL DE APOYO SANTA ROSA</b><br>                 📍 LIMA<br>                 🏛️ MINSA                 </div>`)[0];
+                popup_d7c975e3afc4c7efd9b1e584ea791248.setContent(html_3dd5487c7a3b2195ce2ccf765a6fe413);
+            
+        
+
+        marker_55cd7394fda6dea49021b6d91fc518e5.bindPopup(popup_d7c975e3afc4c7efd9b1e584ea791248)
+        ;
+
+        
+    
+    
+            marker_55cd7394fda6dea49021b6d91fc518e5.bindTooltip(
+                `<div>
+                     LIMA: HOSPITAL DE APOYO SANTA ROSA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_55cd7394fda6dea49021b6d91fc518e5.setIcon(icon_17181d13ec1bb70ad18db79854a434e9);
+            
+    
+            var marker_a141ec91c680d4f05f63fa5404e242cb = L.marker(
+                [-12.2326004, -76.9336669],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_7e8ae465aa619bb587b7af9c35b0bbd5 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_a60198f9849f4ff23e31ea46e02caf96 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_86ce895793530ed7bceb39e0375ecfc3 = $(`<div id="html_86ce895793530ed7bceb39e0375ecfc3" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL DE EMERGENCIAS VILLA EL SALVADOR</b><br>                 📍 LIMA<br>                 🏛️ MINSA                 </div>`)[0];
+                popup_a60198f9849f4ff23e31ea46e02caf96.setContent(html_86ce895793530ed7bceb39e0375ecfc3);
+            
+        
+
+        marker_a141ec91c680d4f05f63fa5404e242cb.bindPopup(popup_a60198f9849f4ff23e31ea46e02caf96)
+        ;
+
+        
+    
+    
+            marker_a141ec91c680d4f05f63fa5404e242cb.bindTooltip(
+                `<div>
+                     LIMA: HOSPITAL DE EMERGENCIAS VILLA EL SALVADOR
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_a141ec91c680d4f05f63fa5404e242cb.setIcon(icon_7e8ae465aa619bb587b7af9c35b0bbd5);
+            
+    
+            var marker_4c01555df3824f5b94f73e2e91020c9a = L.marker(
+                [-12.0499179, -77.0423608],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_fd71f276780ad12c4a12c837bd1b7c55 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_6e6b48bc54c70f981c3a79b09c2a7768 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_9b125f8555174400dd390d43ec2924f7 = $(`<div id="html_9b125f8555174400dd390d43ec2924f7" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL NACIONAL DOCENTE MADRE NIÑO SAN BARTOLOME</b><br>                 📍 LIMA<br>                 🏛️ MINSA                 </div>`)[0];
+                popup_6e6b48bc54c70f981c3a79b09c2a7768.setContent(html_9b125f8555174400dd390d43ec2924f7);
+            
+        
+
+        marker_4c01555df3824f5b94f73e2e91020c9a.bindPopup(popup_6e6b48bc54c70f981c3a79b09c2a7768)
+        ;
+
+        
+    
+    
+            marker_4c01555df3824f5b94f73e2e91020c9a.bindTooltip(
+                `<div>
+                     LIMA: HOSPITAL NACIONAL DOCENTE MADRE NIÑO SAN BARTOLOME
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_4c01555df3824f5b94f73e2e91020c9a.setIcon(icon_fd71f276780ad12c4a12c837bd1b7c55);
+            
+    
+            var marker_f1a0d1ccaf1c5670449cd96922fa5220 = L.marker(
+                [-5.89606, -76.11616333],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_bf5abb2575565e73333fc83b6bb0a4a5 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_3d807ff1c3fb0bbfe39fa9bcb0fd0798 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_dcd3fad6e89d01b15a71e3cf48695d5c = $(`<div id="html_dcd3fad6e89d01b15a71e3cf48695d5c" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL I YURIMAGUAS</b><br>                 📍 LORETO<br>                 🏛️ ESSALUD                 </div>`)[0];
+                popup_3d807ff1c3fb0bbfe39fa9bcb0fd0798.setContent(html_dcd3fad6e89d01b15a71e3cf48695d5c);
+            
+        
+
+        marker_f1a0d1ccaf1c5670449cd96922fa5220.bindPopup(popup_3d807ff1c3fb0bbfe39fa9bcb0fd0798)
+        ;
+
+        
+    
+    
+            marker_f1a0d1ccaf1c5670449cd96922fa5220.bindTooltip(
+                `<div>
+                     LORETO: HOSPITAL I YURIMAGUAS
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_f1a0d1ccaf1c5670449cd96922fa5220.setIcon(icon_bf5abb2575565e73333fc83b6bb0a4a5);
+            
+    
+            var marker_b4bcec4b2132aad10e80b7a596020c67 = L.marker(
+                [-3.762818, -73.253653],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_00dbed7ee4b8542d5a45456ccc36541e = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_9d8552042f0ad3f8b02b4018502730ae = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_9238e93faf6d67854d2c545dd6de89a7 = $(`<div id="html_9238e93faf6d67854d2c545dd6de89a7" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL IQUITOS "CESAR GARAYAR GARCIA"</b><br>                 📍 LORETO<br>                 🏛️ GOBIERNO REGIONAL                 </div>`)[0];
+                popup_9d8552042f0ad3f8b02b4018502730ae.setContent(html_9238e93faf6d67854d2c545dd6de89a7);
+            
+        
+
+        marker_b4bcec4b2132aad10e80b7a596020c67.bindPopup(popup_9d8552042f0ad3f8b02b4018502730ae)
+        ;
+
+        
+    
+    
+            marker_b4bcec4b2132aad10e80b7a596020c67.bindTooltip(
+                `<div>
+                     LORETO: HOSPITAL IQUITOS "CESAR GARAYAR GARCIA"
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_b4bcec4b2132aad10e80b7a596020c67.setIcon(icon_00dbed7ee4b8542d5a45456ccc36541e);
+            
+    
+            var marker_c753a5b4524446f80c2a0c78b88992a5 = L.marker(
+                [-3.90854887, -70.51701259],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_f75f46979432745329db4c5cb6c2eabd = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_a8b3ff624b6bf1e4ce4a3eae953ebc05 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_8a23690019e19a3642d0a284ee2a8f3f = $(`<div id="html_8a23690019e19a3642d0a284ee2a8f3f" style="width: 100.0%; height: 100.0%;">                 <b>CENTRO DE ATENCION PRIMARIA II CABALLOCOCHA</b><br>                 📍 LORETO<br>                 🏛️ ESSALUD                 </div>`)[0];
+                popup_a8b3ff624b6bf1e4ce4a3eae953ebc05.setContent(html_8a23690019e19a3642d0a284ee2a8f3f);
+            
+        
+
+        marker_c753a5b4524446f80c2a0c78b88992a5.bindPopup(popup_a8b3ff624b6bf1e4ce4a3eae953ebc05)
+        ;
+
+        
+    
+    
+            marker_c753a5b4524446f80c2a0c78b88992a5.bindTooltip(
+                `<div>
+                     LORETO: CENTRO DE ATENCION PRIMARIA II CABALLOCOCHA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_c753a5b4524446f80c2a0c78b88992a5.setIcon(icon_f75f46979432745329db4c5cb6c2eabd);
+            
+    
+            var marker_70c61803e886b8a98773f8f86f333074 = L.marker(
+                [-3.7188408, -73.2439423],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_a6ad26de24ad83b49687060e768619ab = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_7ce675b8d0199e7cf4b39a4b59f2f58f = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_1d38221d0cecc476919ff7644bb70b14 = $(`<div id="html_1d38221d0cecc476919ff7644bb70b14" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL III IQUITOS</b><br>                 📍 LORETO<br>                 🏛️ ESSALUD                 </div>`)[0];
+                popup_7ce675b8d0199e7cf4b39a4b59f2f58f.setContent(html_1d38221d0cecc476919ff7644bb70b14);
+            
+        
+
+        marker_70c61803e886b8a98773f8f86f333074.bindPopup(popup_7ce675b8d0199e7cf4b39a4b59f2f58f)
+        ;
+
+        
+    
+    
+            marker_70c61803e886b8a98773f8f86f333074.bindTooltip(
+                `<div>
+                     LORETO: HOSPITAL III IQUITOS
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_70c61803e886b8a98773f8f86f333074.setIcon(icon_a6ad26de24ad83b49687060e768619ab);
+            
+    
+            var marker_8c9e14c566eb7f6d7945efb4fa7dc223 = L.marker(
+                [-3.72696048, -73.25341698],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_583ba6c943372b9ca5f1b891a7d0f351 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_014110241175202af70b68e79badbd43 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_f35a398a61f5e849533da0eddda27e81 = $(`<div id="html_f35a398a61f5e849533da0eddda27e81" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL REGIONAL DE LORETO "FELIPE SANTIAGO ARRIOLA IGLESIAS"</b><br>                 📍 LORETO<br>                 🏛️ GOBIERNO REGIONAL                 </div>`)[0];
+                popup_014110241175202af70b68e79badbd43.setContent(html_f35a398a61f5e849533da0eddda27e81);
+            
+        
+
+        marker_8c9e14c566eb7f6d7945efb4fa7dc223.bindPopup(popup_014110241175202af70b68e79badbd43)
+        ;
+
+        
+    
+    
+            marker_8c9e14c566eb7f6d7945efb4fa7dc223.bindTooltip(
+                `<div>
+                     LORETO: HOSPITAL REGIONAL DE LORETO "FELIPE SANTIAGO ARRIOLA IGLESIAS"
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_8c9e14c566eb7f6d7945efb4fa7dc223.setIcon(icon_583ba6c943372b9ca5f1b891a7d0f351);
+            
+    
+            var marker_7424f9a02f30bd42f0b510d865f28b79 = L.marker(
+                [-5.89353, -76.10645167],
+                {
+}
+            ).addTo(map_7fc46e7bee5cb289d4c21cfac5c638f2);
+        
+    
+            var icon_56a6b481eac360585056b5297f9551eb = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_01aa0e72e12695287f6cb303da8c8612 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_bcbc8316cc8e37c7b0e49c9f68bbbbb4 = $(`<div id="html_bcbc8316cc8e37c7b0e49c9f68bbbbb4" style="width: 100.0%; height: 100.0%;">                 <b>HOSPITAL SANTA GEMA DE  YURIMAGUAS</b><br>                 📍 LORETO<br>                 🏛️ GOBIERNO REGIONAL                 </div>`)[0];
+                popup_01aa0e72e12695287f6cb303da8c8612.setContent(html_bcbc8316cc8e37c7b0e49c9f68bbbbb4);
+            
+        
+
+        marker_7424f9a02f30bd42f0b510d865f28b79.bindPopup(popup_01aa0e72e12695287f6cb303da8c8612)
+        ;
+
+        
+    
+    
+            marker_7424f9a02f30bd42f0b510d865f28b79.bindTooltip(
+                `<div>
+                     LORETO: HOSPITAL SANTA GEMA DE  YURIMAGUAS
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_7424f9a02f30bd42f0b510d865f28b79.setIcon(icon_56a6b481eac360585056b5297f9551eb);
+            
+</script>
+</html>

@@ -11,21 +11,21 @@ __pycache__/
 
 # Jupyter
 .ipynb_checkpoints/
-*.ipynb
+# *.ipynb
 
 # Archivos de sistema
 .DS_Store
 Thumbs.db
 
 # Datos (no versionar archivos pesados)
-data/
+# data/
 !data/.gitkeep
 
 # Salidas
-outputs/**/*.geojson
-outputs/**/*.html
-outputs/**/*.png
-outputs/**/*.csv
+# outputs/**/*.geojson
+# outputs/**/*.html
+# outputs/**/*.png
+# outputs/**/*.csv
 
 # Configuración local de IDE
 .vscode/
