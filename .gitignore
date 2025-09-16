@@ -1,5 +1,32 @@
-env
-__pycache__
+# Entornos virtuales
+.venv/
+env/
+ENV/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter
+.ipynb_checkpoints/
 *.ipynb
-.ipynb_checkpoints
-*.drawio
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Datos (no versionar archivos pesados)
+data/
+!data/.gitkeep
+
+# Salidas
+outputs/**/*.geojson
+outputs/**/*.html
+outputs/**/*.png
+outputs/**/*.csv
+
+# Configuración local de IDE
+.vscode/
+.idea/

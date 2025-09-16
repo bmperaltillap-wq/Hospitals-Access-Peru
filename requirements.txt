@@ -1,8 +1,34 @@
+# Core Data Science
 numpy
-streamlit
-matplotlib
-plotly
 pandas
 scipy
+
+# Geospatial Analysis
+geopandas
+folium
+shapely
+pyproj
+rtree
+mapclassify
+contextily
+
+# Visualization
+matplotlib
+seaborn
+plotly
+
+# Streamlit & Web
+streamlit
+streamlit-folium
+
+# Jupyter Environment
+jupyter
 ipykernel
 nbformat
+
+# Data Processing
+requests
+
+# Optional (ya las tienes instaladas)
+# pyogrio  # Para lectura rápida de archivos geoespaciales
+# scikit-learn  # Para análisis adicionales
