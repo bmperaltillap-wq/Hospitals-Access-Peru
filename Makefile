@@ -5,7 +5,7 @@ install:
 	pip install -r requirements.txt
 
 # Run complete analysis pipeline
-all: data static-maps proximity interactive dashboard
+all: data static-maps proximity interactive app dashboard
 
 # Process hospital data (Notebook 1)
 data:
@@ -23,7 +23,10 @@ proximity:
 interactive:
 	jupyter nbconvert --execute notebooks/04_interactive_maps.ipynb
 
+# Develop Streamlit app (Notebook 5)
+app:
+	jupyter nbconvert --execute notebooks/05_streamlit_app.ipynb
+
 # Launch Streamlit dashboard
 dashboard:
 	streamlit run app/app.py
-
