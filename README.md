@@ -1,5 +1,5 @@
 # 🏥 Hospitals Access Peru - Geospatial Analysis
-
+Bianca Peraltilla - 2025-2
 **Geospatial Analysis of Public Hospital Access in Peru**
 
 A comprehensive analysis of public hospital accessibility across Peru using geospatial data science techniques, interactive visualizations, and a Streamlit dashboard.
